@@ -1,0 +1,39 @@
+# Docker Compose 配置文件 - AI-Travel-Planner
+# 注意：由于网络连接问题，可能无法拉取Docker镜像
+# 建议在有稳定网络连接的环境中运行此配置
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: ai-travel-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: ai_travel
+      MYSQL_USER: ai_travel_user
+      MYSQL_PASSWORD: ai_travel_password
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./src/main/resources/databaseInit.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    image: ai-travel-backend:latest
+    container_name: ai-travel-planner
+    ports:
+      - "8081:8081"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://ai-travel-mysql:3306/ai_travel?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 123456
+
+volumes:
+  mysql_data:
