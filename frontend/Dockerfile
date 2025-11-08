@@ -14,7 +14,7 @@ RUN npm install
 COPY . . 
 
 # 构建参数（用于注入环境变量） 
-ARG VITE_AMAP_KEY=e99dd91dd2b26b83aba04ab7544f0033
+ARG VITE_AMAP_KEY=your_key
 ARG VITE_API_BASE_URL=http://localhost:8081/api 
 
 # 设置环境变量 
