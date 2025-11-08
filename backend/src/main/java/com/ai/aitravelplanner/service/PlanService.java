@@ -19,11 +19,12 @@ public interface PlanService {
     PlanResponse generatePlan(Map<String, Object> payload);
 
     /**
-     * 保存行程和景点xx
+     * 保存行程和景点
      * @param userId 用户ID
      * @param request 请求参数
+     * @return 生成的行程ID
      */
-    void savePlan(Long userId, PlanRequestDTO request);
+    Long savePlan(Long userId, PlanRequestDTO request);
 
     /**
      * 根据用户ID获取所有行程

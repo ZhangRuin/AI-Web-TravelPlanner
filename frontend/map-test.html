@@ -1,0 +1,211 @@
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>地图测试独立页面</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        #mapContainer {
+            width: 800px;
+            height: 600px;
+            border: 2px solid #409EFF;
+            background-color: #f0f0f0;
+            position: relative;
+        }
+        .debug-info {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f4f4f5;
+            border-radius: 4px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .debug-info h3 {
+            margin-top: 0;
+            color: #303133;
+        }
+        #debugLog {
+            font-family: monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            color: #606266;
+        }
+        .status {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .success {
+            color: #67c23a;
+        }
+        .error {
+            color: #f56c6c;
+        }
+        .loading {
+            color: #e6a23c;
+        }
+    </style>
+</head>
+<body>
+    <h1>地图测试独立页面</h1>
+    <div id="mapContainer"><div style="display:flex;align-items:center;justify-content:center;height:100%;color:#606266;">正在加载地图...</div></div>
+    
+    <div class="debug-info">
+        <h3>调试日志</h3>
+        <p class="status" id="status">状态: 初始化中...</p>
+        <p>容器尺寸: <span id="containerSize">计算中...</span></p>
+        <pre id="debugLog"></pre>
+    </div>
+    
+    <script>
+        // 获取DOM元素
+        const mapContainer = document.getElementById('mapContainer');
+        const debugLog = document.getElementById('debugLog');
+        const statusDisplay = document.getElementById('status');
+        const containerSizeDisplay = document.getElementById('containerSize');
+        
+        // 日志函数
+        function log(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = `${timestamp}: ${message}\n`;
+            debugLog.textContent += logEntry;
+            console.log(`[地图测试] ${message}`);
+            
+            // 滚动到底部
+            debugLog.scrollTop = debugLog.scrollHeight;
+        }
+        
+        // 更新状态显示
+        function updateStatus(text, type = 'loading') {
+            statusDisplay.textContent = `状态: ${text}`;
+            
+            // 移除所有类
+            statusDisplay.classList.remove('success', 'error', 'loading');
+            
+            // 添加新类
+            statusDisplay.classList.add(type);
+        }
+        
+        // 初始化地图
+        function initMap() {
+            try {
+                log('开始初始化地图');
+                updateStatus('初始化中...', 'loading');
+                
+                // 确保容器有固定尺寸
+                if (!mapContainer) {
+                    throw new Error('地图容器未找到');
+                }
+                
+                // 设置固定尺寸
+                mapContainer.style.width = '800px';
+                mapContainer.style.height = '600px';
+                mapContainer.style.position = 'relative';
+                mapContainer.style.zIndex = '1';
+                
+                // 计算容器尺寸
+                const rect = mapContainer.getBoundingClientRect();
+                const sizeText = `${rect.width}px × ${rect.height}px`;
+                containerSizeDisplay.textContent = sizeText;
+                log(`容器尺寸: ${sizeText}`);
+                
+                // 加载地图SDK
+                log('开始加载高德地图SDK...');
+                loadAMapSDK();
+                
+            } catch (error) {
+                log(`初始化错误: ${error.message}`);
+                updateStatus('初始化失败', 'error');
+            }
+        }
+        
+        // 加载高德地图SDK
+        function loadAMapSDK() {
+            try {
+                // 创建脚本元素
+                const script = document.createElement('script');
+                script.type = 'text/javascript';
+                script.src = 'https://webapi.amap.com/maps?v=1.4.15&key=e99dd91dd2b26b83aba04ab7544f0033';
+                
+                // 加载成功回调
+                script.onload = function() {
+                    try {
+                        log('高德地图SDK加载成功');
+                        
+                        if (!window.AMap) {
+                            throw new Error('AMap对象未定义');
+                        }
+                        
+                        // 清空容器
+                        mapContainer.innerHTML = '';
+                        
+                        // 创建地图实例
+                        log('创建地图实例...');
+                        const map = new AMap.Map(mapContainer, {
+                            zoom: 11,
+                            center: [121.4737, 31.2304], // 上海中心坐标
+                            viewMode: '2D',
+                            layers: [new AMap.TileLayer()], // 只使用基础图层
+                            showBuildingBlock: false,
+                            pitch: 0,
+                            rotation: 0
+                        });
+                        
+                        // 监听地图完成事件
+                        map.on('complete', function() {
+                            log('地图加载完成！');
+                            updateStatus('地图加载成功', 'success');
+                            
+                            // 添加一个标记
+                            log('添加测试标记');
+                            const marker = new AMap.Marker({
+                                position: [121.4737, 31.2304],
+                                title: '上海中心'
+                            });
+                            marker.setMap(map);
+                            
+                            // 添加简单控件
+                            log('添加地图控件');
+                            map.addControl(new AMap.ToolBar());
+                        });
+                        
+                        // 监听地图错误事件
+                        map.on('error', function(e) {
+                            const errorMsg = e.error || '未知地图错误';
+                            log(`地图渲染错误: ${errorMsg}`);
+                            updateStatus('地图渲染失败', 'error');
+                        });
+                        
+                    } catch (error) {
+                        log(`地图初始化失败: ${error.message}`);
+                        updateStatus('地图初始化失败', 'error');
+                    }
+                };
+                
+                // 加载失败回调
+                script.onerror = function() {
+                    log('高德地图SDK加载失败');
+                    updateStatus('SDK加载失败', 'error');
+                };
+                
+                // 添加脚本到页面
+                document.head.appendChild(script);
+                log('脚本标签已添加到页面');
+                
+            } catch (error) {
+                log(`SDK加载异常: ${error.message}`);
+                updateStatus('SDK加载异常', 'error');
+            }
+        }
+        
+        // 页面加载完成后初始化地图
+        window.onload = function() {
+            log('页面加载完成，准备初始化地图');
+            initMap();
+        };
+    </script>
+</body>
+</html>

@@ -10,4 +10,6 @@ import java.util.List;
 public class PlanDayDTO {
     private Integer day;               // 第几天
     private List<SpotDTO> spots;       // 当天的景点详细信息
+    private String accommodation;      // 住宿信息
+    private String notes;              // 备注信息
 }

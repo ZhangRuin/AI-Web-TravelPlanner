@@ -31,7 +31,11 @@ public class WebUserController {
     }
 
     @PostMapping("/register")
-    public Result<String> register(@RequestBody User user) {
+    public Result<String> register(@RequestParam String username,
+                                 @RequestParam String password) {
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(password);
         boolean ok = userService.register(user);
         if (ok) {
             return Result.success("注册成功");
@@ -57,7 +61,6 @@ public class WebUserController {
             Long userId = Long.parseLong(payload.get("userId").toString());
             List<String> preferences = (List<String>) payload.get("preferences");
             String travelStyle = (String) payload.get("travelStyle");
-
             userService.saveUserPreferences(userId, preferences, travelStyle);
             return Result.success("保存成功");
         } catch (Exception e) {

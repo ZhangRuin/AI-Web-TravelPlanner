@@ -1,6 +1,7 @@
 package com.ai.aitravelplanner.dto;
 
 import lombok.Data;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -10,6 +11,8 @@ import java.util.List;
 public class PlanRequestDTO {
     private String planName;          // 行程名称
     private String destination;       // 目的地
+    private LocalDate startDate;      // 开始日期
+    private LocalDate endDate;        // 结束日期
     private Integer days;             // 天数
     private Double budget;            // 预算
     private Integer people;           // 人数

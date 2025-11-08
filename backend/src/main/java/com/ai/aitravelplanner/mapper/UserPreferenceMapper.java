@@ -12,6 +12,6 @@ public interface UserPreferenceMapper {
     int deleteByUserId(@Param("userId") Long userId);
 
     // 插入新的偏好
-    @Insert("INSERT INTO user_preference(user_id, preference, travelstyle) VALUES(#{userId}, #{preference}, #{travelStyle})")
-    int insert(@Param("userId") Long userId, @Param("preference") String preference, @Param("travelStyle") String travelStyle);
+    @Insert("INSERT INTO user_preference(user_id, preferences, travel_style) VALUES(#{userId}, #{preferences}, #{travelStyle})")
+    int insert(@Param("userId") Long userId, @Param("preferences") String preferences, @Param("travelStyle") String travelStyle);
 }

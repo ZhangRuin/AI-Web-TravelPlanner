@@ -54,7 +54,7 @@ curl -X GET "http://localhost:8081/api/map/nearby?lng=118.779441&lat=32.055063&t
 
 **调用示例**：
 ```bash
-curl -X POST "http://localhost:8080/api/user/login?username=test&password=123456"
+curl -X POST "http://localhost:8081/api/user/login?username=test&password=123456"
 ```
 
 ### 用户注册
@@ -79,7 +79,7 @@ curl -X POST "http://localhost:8080/api/user/login?username=test&password=123456
 
 **调用示例**：
 ```bash
-curl -X POST "http://localhost:8080/api/user/register" \
+curl -X POST "http://localhost:8081/api/user/register" \
   -H "Content-Type: application/json" \
   -d '{"username":"newuser","password":"123456"}'
 ```
@@ -100,7 +100,7 @@ curl -X POST "http://localhost:8080/api/user/register" \
 
 **调用示例**：
 ```bash
-curl -X GET "http://localhost:8080/api/user/preference?userId=1"
+curl -X GET "http://localhost:8081/api/user/preference?userId=1"
 ```
 
 ### 保存用户偏好
@@ -125,7 +125,7 @@ curl -X GET "http://localhost:8080/api/user/preference?userId=1"
 
 **调用示例**：
 ```bash
-curl -X POST "http://localhost:8080/api/user/preferences/save" \
+curl -X POST "http://localhost:8081/api/user/preferences/save" \
   -H "Content-Type: application/json" \
   -d '{"userId":1,"preferences":["美食","历史文化"],"travelStyle":"休闲度假"}'
 ```
@@ -149,7 +149,7 @@ curl -X POST "http://localhost:8080/api/user/preferences/save" \
 
 **调用示例**：
 ```bash
-curl -X POST "http://localhost:8080/api/plan/save?userId=1" \
+curl -X POST "http://localhost:8081/api/plan/save?userId=1" \
   -H "Content-Type: application/json" \
   -d '{"title":"北京三日游","startDate":"2024-05-01","endDate":"2024-05-03","budget":2000,"preferences":["美食","历史"]}'
 ```
@@ -170,7 +170,7 @@ curl -X POST "http://localhost:8080/api/plan/save?userId=1" \
 
 **调用示例**：
 ```bash
-curl -X GET "http://localhost:8080/api/plan/list/1"
+curl -X GET "http://localhost:8081/api/plan/list/1"
 ```
 
 ### 搜索用户行程
@@ -193,7 +193,7 @@ curl -X GET "http://localhost:8080/api/plan/list/1"
 
 **调用示例**：
 ```bash
-curl -X GET "http://localhost:8080/api/plan/search?userId=1&planName=北京&budgetMax=3000"
+curl -X GET "http://localhost:8081/api/plan/search?userId=1&planName=北京&budgetMax=3000"
 ```
 
 ### 删除行程
@@ -212,7 +212,7 @@ curl -X GET "http://localhost:8080/api/plan/search?userId=1&planName=北京&budg
 
 **调用示例**：
 ```bash
-curl -X DELETE "http://localhost:8080/api/plan/delete/1"
+curl -X DELETE "http://localhost:8081/api/plan/delete/1"
 ```
 
 ## 4. SpotController
@@ -233,7 +233,7 @@ curl -X DELETE "http://localhost:8080/api/plan/delete/1"
 
 **调用示例**：
 ```bash
-curl -X GET "http://localhost:8080/api/spot/list/1"
+curl -X GET "http://localhost:8081/api/spot/list/1"
 ```
 
 ## 5. AIPlanController
@@ -262,7 +262,7 @@ curl -X GET "http://localhost:8080/api/spot/list/1"
 
 **调用示例**：
 ```bash
-curl -X POST "http://localhost:8080/api/ai/generate" \
+curl -X POST "http://localhost:8081/api/ai/generate" \
   -H "Content-Type: application/json" \
   -d '{"destination":"北京","days":3,"budget":2000,"preferences":["美食","历史文化"]}'
 ```
@@ -292,7 +292,7 @@ curl -X POST "http://localhost:8080/api/ai/generate" \
 
 **调用示例**：
 ```bash
-curl -X POST "http://localhost:8080/api/budget/add" \
+curl -X POST "http://localhost:8081/api/budget/add" \
   -H "Content-Type: application/json" \
   -d '{"planId":1,"category":"餐饮","amount":500.0}'
 ```
@@ -313,7 +313,7 @@ curl -X POST "http://localhost:8080/api/budget/add" \
 
 **调用示例**：
 ```bash
-curl -X GET "http://localhost:8080/api/budget/list/1"
+curl -X GET "http://localhost:8081/api/budget/list/1"
 ```
 
 ### 删除预算项
@@ -332,7 +332,7 @@ curl -X GET "http://localhost:8080/api/budget/list/1"
 
 **调用示例**：
 ```bash
-curl -X DELETE "http://localhost:8080/api/budget/delete/1"
+curl -X DELETE "http://localhost:8081/api/budget/delete/1"
 ```
 
 ## 7. BudgetAiController
@@ -360,7 +360,7 @@ curl -X DELETE "http://localhost:8080/api/budget/delete/1"
 
 **调用示例**：
 ```bash
-curl -X POST "http://localhost:8080/api/ai/budget/analyze" \
+curl -X POST "http://localhost:8081/api/ai/budget/analyze" \
   -H "Content-Type: application/json" \
   -d '{"destination":"北京","days":3,"budget":2000}'
 ```

@@ -24,11 +24,11 @@ public interface UserMapper {
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void insert(User user);
 
-    // 查询用户偏好列表
-    @Select("SELECT preference FROM user_preference WHERE user_id = #{userId}")
-    List<String> getPreferencesByUserId(@Param("userId") Long userId);
+    // 查询用户偏好列表（从JSON字段中提取）
+    @Select("SELECT preferences FROM user_preference WHERE user_id = #{userId}")
+    String getPreferencesJsonByUserId(@Param("userId") Long userId);
 
-    // 查询用户 travelStyle（取第一条）
-    @Select("SELECT travelstyle FROM user_preference WHERE user_id = #{userId} LIMIT 1")
+    // 查询用户旅行风格
+    @Select("SELECT travel_style FROM user_preference WHERE user_id = #{userId}")
     String getTravelStyleByUserId(@Param("userId") Long userId);
 }
