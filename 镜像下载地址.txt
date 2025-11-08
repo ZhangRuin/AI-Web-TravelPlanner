@@ -1,0 +1,2 @@
+- 后端镜像：https://hub.docker.com/r/211840188kunbadanzi/webai-backend
+- 前端镜像：https://hub.docker.com/r/211840188kunbadanzi/webai-frontend
